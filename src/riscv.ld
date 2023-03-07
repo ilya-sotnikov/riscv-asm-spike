@@ -6,15 +6,24 @@ SECTIONS
 {
     . = 0x80000000;
 
-    .tohost : ALIGN(0x1000)
+    .tohost : ALIGN(4K)
     {
         *(.tohost)
     }
 
-    . += 0x1000;
+    . += 4K;
 
-    .text : ALIGN(0x1000)
+    .text : ALIGN(4K)
     {
         *(.text)
+        *(.text.init)
     }
+
+    .stack : ALIGN(4K)
+    {
+        _estack = .;
+        . += 128K;
+        _sstack = .;
+    }
+
 }
