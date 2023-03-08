@@ -5,3 +5,6 @@ _start:
         la sp, _sstack
 
         j main
+
+        li a0, 0
+        j tohost_exit

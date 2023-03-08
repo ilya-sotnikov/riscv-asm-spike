@@ -15,6 +15,7 @@ tohost_exit:
 # a1 arg0
 # a2 arg1
 # a3 arg2
+# a0 syscall number
 .globl syscall
 syscall:
         la t0, magic_mem

@@ -19,6 +19,11 @@ SECTIONS
         *(.text.init)
     }
 
+    .data : ALIGN(4K)
+    {
+        *(.data)
+    }
+
     .stack : ALIGN(4K)
     {
         _estack = .;
