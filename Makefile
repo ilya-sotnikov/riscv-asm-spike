@@ -1,5 +1,10 @@
 .PHONY: all clean run
 
+TOOLCHAIN_PREFIX := riscv64-elf
+AS := $(TOOLCHAIN_PREFIX)-as
+CC := $(TOOLCHAIN_PREFIX)-gcc
+LD := $(TOOLCHAIN_PREFIX)-ld
+
 SRC_DIR := src
 TARGET_DIR := target
 
@@ -15,16 +20,15 @@ LD_FLAGS := -Map=$(TARGET_DIR)/$(TARGET_NAME).map -T $(SRC_DIR)/$(LINKER_SCRIPT)
 all: $(TARGET_DIR)/$(TARGET_NAME)
 
 $(TARGET_DIR)/$(TARGET_NAME): $(OBJ)
-	riscv64-unknown-elf-ld $(LD_FLAGS) -o $@ $^
+	$(LD) $(LD_FLAGS) -o $@ $^
 
-$(TARGET_DIR)/%.o: $(SRC_DIR)/%.S $(TARGET_DIR)
-	riscv64-unknown-elf-as -o $@ $<
-
-$(TARGET_DIR)/%.o: $(SRC_DIR)/%.c $(TARGET_DIR)
-	riscv64-unknown-elf-gcc -Wall -Werror -Og -ggdb -ffreestanding -nostdlib -r -o $@ $<
-
-$(TARGET_DIR):
+$(TARGET_DIR)/%.o: $(SRC_DIR)/%.S
 	mkdir -p $(TARGET_DIR)
+	$(AS) -o $@ $<
+
+$(TARGET_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(TARGET_DIR)
+	$(CC) -Wall -Werror -Og -ggdb -ffreestanding -nostdlib -r -o $@ $<
 
 clean:
 	rm -rf $(TARGET_DIR)

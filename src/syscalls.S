@@ -40,10 +40,6 @@ syscall:
 
         ret # syscall number in a0
 
-
-
-
-
 # to communicate with the host
 # check riscv-software-src/riscv-tests
 .section .tohost, "aw", @progbits

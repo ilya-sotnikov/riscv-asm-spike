@@ -3,8 +3,8 @@
 # prints a char
 # a0 char
 # a0 printed char
-.globl putc
-putc:
+.globl print_char
+print_char:
         addi sp, sp, -9
         sd ra, 1(sp)
 
@@ -25,8 +25,8 @@ putc:
 # returns the length of a null-terminated string
 # a0 string
 # a0 string length
-.globl strlen
-strlen:
+.globl str_len
+str_len:
         mv t0, a0
 1:
         lb t1, 0(a0)
@@ -41,15 +41,15 @@ strlen:
 # prints a null-terminated string and a newline
 # a0 string
 # a0 string length
-.globl puts
-puts:
+.globl print_str_ln
+print_str_ln:
         addi sp, sp, -24
         sd ra, 0(sp)
         sd s0, 8(sp)
         sd s1, 16(sp)
 
         mv s0, a0
-        jal strlen
+        jal str_len
         mv a3, a0 # bytes to write
         mv s1, a0 # save string length for later
 
@@ -60,7 +60,7 @@ puts:
         jal syscall
 
         li a0, '\n'
-        jal putc
+        jal print_char
 
         mv a0, s1 # string length
 
@@ -73,36 +73,36 @@ puts:
 # prints a number as hex and a newline
 # a0 number
 # a0 printed string length
-.globl puth
-puth:
+.globl print_hex_ln
+print_hex_ln:
         addi sp, sp, -32
         sd ra, 24(sp)
 
         addi t0, sp, 16 # store hex digits and letters backwards
-        sb zero, 1(sp) # null-termination for puts
+        sb zero, 1(sp) # null-termination for print_str_ln
         mv t1, a0
         j 1f # skip the first shift
-.Lputh_loop:
+.Lprint_hex_ln_loop:
         srli t1, t1, 4
-        beqz t1, .Lputh_print
+        beqz t1, .Lprint_hex_ln_print
         addi t0, t0, -1 # decrement the store address
 1:
         andi t2, t1, 0xF
         sltiu t3, t2, 0xA
-        bnez t3, .Lputh_digit
+        bnez t3, .Lprint_hex_ln_digit
 
-.Lputh_letter:
+.Lprint_hex_ln_letter:
         addi t2, t2, 'a' - 0xA
-        j .Lputh_store
-.Lputh_digit:
+        j .Lprint_hex_ln_store
+.Lprint_hex_ln_digit:
         addi t2, t2, '0'
-.Lputh_store:
+.Lprint_hex_ln_store:
         sb t2, 0(t0)
-        j .Lputh_loop
+        j .Lprint_hex_ln_loop
 
-.Lputh_print:
+.Lprint_hex_ln_print:
         mv a0, t0
-        jal puts
+        jal print_str_ln
 
         ld ra, 24(sp)
         addi sp, sp, 32
