@@ -76,10 +76,11 @@ print_str_ln:
 .globl print_hex_ln
 print_hex_ln:
         addi sp, sp, -32
+
         sd ra, 24(sp)
 
-        addi t0, sp, 16 # store hex digits and letters backwards
-        sb zero, 1(sp) # null-termination for print_str_ln
+        addi t0, sp, 15 # store hex digits and letters backwards
+        sb zero, 1(t0) # null-termination for print_str_ln
         mv t1, a0
         j 1f # skip the first shift
 .Lprint_hex_ln_loop:
