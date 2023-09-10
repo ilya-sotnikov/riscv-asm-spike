@@ -24,7 +24,7 @@ $(TARGET_DIR)/$(TARGET_NAME): $(OBJ)
 
 $(TARGET_DIR)/%.o: $(SRC_DIR)/%.S
 	mkdir -p $(TARGET_DIR)
-	$(AS) -o $@ $<
+	$(AS) -I $(SRC_DIR) -o $@ $<
 
 $(TARGET_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(TARGET_DIR)

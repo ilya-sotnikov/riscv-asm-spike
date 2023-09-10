@@ -1,3 +1,5 @@
+.include "regs.S"
+
 .section .text
 
 .globl main
@@ -32,6 +34,14 @@ main:
         la a0, msg_sep
         jal print_str_ln
 
+        la a0, msg_mtime
+        jal print_str_ln
+        li a0, MTIME_BASE
+        ld a0, 0(a0)
+        jal print_unsigned_ln
+        la a0, msg_sep
+        jal print_str_ln
+
         la a0, msg_signed
         jal print_str_ln
         li a0, 1337
@@ -49,6 +59,22 @@ main:
         la a0, msg_sep
         jal print_str_ln
 
+        la a0, msg_mtime
+        jal print_str_ln
+        li a0, MTIME_BASE
+        ld a0, (a0)
+        jal print_unsigned_ln
+        la a0, msg_sep
+        jal print_str_ln
+
+        la a0, msg_mtime
+        jal print_str_ln
+        li a0, MTIME_BASE
+        ld a0, (a0)
+        jal print_unsigned_ln
+        la a0, msg_sep
+        jal print_str_ln
+
         ld ra, 0(sp)
         addi sp, sp, 8
 
@@ -61,4 +87,5 @@ msg_out:      .asciz "testing output"
 msg_hex:      .asciz "testing hex"
 msg_unsigned: .asciz "testing unsigned"
 msg_signed:   .asciz "testing signed"
+msg_mtime:    .asciz "mtime:"
 msg_sep:      .asciz "-------------------------"
