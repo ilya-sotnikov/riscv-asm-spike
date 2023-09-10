@@ -108,3 +108,60 @@ print_hex_ln:
         ld ra, 24(sp)
         addi sp, sp, 32
         ret
+
+# prints an unsigned number and a newline
+# a0 number
+# a0 printed string length
+.globl print_unsigned_ln
+print_unsigned_ln:
+        addi sp, sp, -32
+        sd ra, 24(sp)
+
+        addi t0, sp, 19 # storing backwards, max digits log10(2^64)+1
+        sb zero, 1(t0) # null-termination
+
+        li t6, 10
+
+.Lprint_unsigned_ln_loop:
+        remu t1, a0, t6
+
+        addi t1, t1, '0'
+        sb t1, (t0)
+
+        bltu a0, t6, .Lprint_unsigned_ln_print
+
+        addi t0, t0, -1
+        divu a0, a0, t6
+        j .Lprint_unsigned_ln_loop
+
+.Lprint_unsigned_ln_print:
+        mv a0, t0
+        jal print_str_ln
+
+        ld ra, 24(sp)
+        addi sp, sp, 32
+        ret
+
+# prints a signed number and a newline
+# a0 number
+# a0 printed string length
+.globl print_signed_ln
+print_signed_ln:
+        addi sp, sp, -16
+        sd ra, (sp)
+
+        bgtz a0, 1f
+
+        sd a0, 8(sp)
+        li a0, '-'
+        jal print_char
+        ld a0, 8(sp)
+
+        neg a0, a0
+1:
+        jal print_unsigned_ln
+
+        ld ra, (sp)
+        addi sp, sp, 16
+
+        ret
