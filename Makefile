@@ -16,6 +16,7 @@ TARGET_NAME := main
 LINKER_SCRIPT := riscv.ld
 
 LD_FLAGS := -Map=$(TARGET_DIR)/$(TARGET_NAME).map -T $(SRC_DIR)/$(LINKER_SCRIPT)
+C_FLAGS := -Wall -Wextra -std=c11 -pedantic -O2 -ffreestanding -nostdlib -mcmodel=medany -c
 
 all: $(TARGET_DIR)/$(TARGET_NAME)
 
@@ -28,7 +29,7 @@ $(TARGET_DIR)/%.o: $(SRC_DIR)/%.S
 
 $(TARGET_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(TARGET_DIR)
-	$(CC) -Wall -Werror -Og -ggdb -ffreestanding -nostdlib -r -o $@ $<
+	$(CC) $(C_FLAGS) -o $@ $<
 
 clean:
 	rm -rf $(TARGET_DIR)
