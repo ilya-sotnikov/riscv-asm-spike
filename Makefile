@@ -15,6 +15,7 @@ OBJ := $(filter %.o, $(SRC:$(SRC_DIR)/%.S=$(TARGET_DIR)/%.o) \
 TARGET_NAME := main
 LINKER_SCRIPT := riscv.ld
 
+AS_FLAGS := -march=rv64gc
 LD_FLAGS := -Map=$(TARGET_DIR)/$(TARGET_NAME).map -T $(SRC_DIR)/$(LINKER_SCRIPT)
 C_FLAGS := -Wall -Wextra -std=c11 -pedantic -O2 -ffreestanding -nostdlib -mcmodel=medany -c
 
@@ -25,7 +26,7 @@ $(TARGET_DIR)/$(TARGET_NAME): $(OBJ)
 
 $(TARGET_DIR)/%.o: $(SRC_DIR)/%.S
 	mkdir -p $(TARGET_DIR)
-	$(AS) -I $(SRC_DIR) -o $@ $<
+	$(AS) $(AS_FLAGS) -I $(SRC_DIR) -o $@ $<
 
 $(TARGET_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(TARGET_DIR)
