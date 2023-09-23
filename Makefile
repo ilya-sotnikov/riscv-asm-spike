@@ -15,9 +15,11 @@ OBJ := $(filter %.o, $(SRC:$(SRC_DIR)/%.s=$(TARGET_DIR)/%.o) \
 TARGET_NAME := main
 LINKER_SCRIPT := riscv.ld
 
-AS_FLAGS := -march=rv64gc
+RV_ARCH := rv64gc
+AS_FLAGS := -march=$(RV_ARCH)
 LD_FLAGS := -Map=$(TARGET_DIR)/$(TARGET_NAME).map -T $(SRC_DIR)/$(LINKER_SCRIPT)
-C_FLAGS := -Wall -Wextra -std=c11 -pedantic -O2 -ffreestanding -nostdlib -mcmodel=medany -c
+C_FLAGS := -Wall -Wextra -std=c11 -pedantic -O2 -ffreestanding -nostdlib \
+		   -mcmodel=medany -march=$(RV_ARCH) -c
 
 all: $(TARGET_DIR)/$(TARGET_NAME)
 
