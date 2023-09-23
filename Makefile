@@ -8,8 +8,8 @@ LD := $(TOOLCHAIN_PREFIX)-ld
 SRC_DIR := src
 TARGET_DIR := target
 
-SRC := $(wildcard $(SRC_DIR)/*.S $(SRC_DIR)/*.c)
-OBJ := $(filter %.o, $(SRC:$(SRC_DIR)/%.S=$(TARGET_DIR)/%.o) \
+SRC := $(wildcard $(SRC_DIR)/*.s $(SRC_DIR)/*.c)
+OBJ := $(filter %.o, $(SRC:$(SRC_DIR)/%.s=$(TARGET_DIR)/%.o) \
 	   $(SRC:$(SRC_DIR)/%.c=$(TARGET_DIR)/%.o))
 
 TARGET_NAME := main
@@ -24,7 +24,7 @@ all: $(TARGET_DIR)/$(TARGET_NAME)
 $(TARGET_DIR)/$(TARGET_NAME): $(OBJ)
 	$(LD) $(LD_FLAGS) -o $@ $^
 
-$(TARGET_DIR)/%.o: $(SRC_DIR)/%.S
+$(TARGET_DIR)/%.o: $(SRC_DIR)/%.s
 	mkdir -p $(TARGET_DIR)
 	$(AS) $(AS_FLAGS) -I $(SRC_DIR) -o $@ $<
 

@@ -1,6 +1,6 @@
 .section .text
 
-.include "regs.S"
+.include "regs.s"
 
 trap_handler:
         .balign 4

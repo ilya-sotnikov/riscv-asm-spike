@@ -1,6 +1,6 @@
 .section .text
 
-.include "regs.S"
+.include "regs.s"
 
 # prints a char
 # a0 char
