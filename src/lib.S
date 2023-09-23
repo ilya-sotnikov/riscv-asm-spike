@@ -1,5 +1,7 @@
 .section .text
 
+.include "regs.S"
+
 # prints a char
 # a0 char
 # a0 printed char
@@ -164,4 +166,18 @@ print_signed_ln:
         ld ra, (sp)
         addi sp, sp, 16
 
+        ret
+
+# a0 mtime
+.globl mtime_get
+mtime_get:
+        li a0, MTIME_BASE
+        ld a0, (a0)
+        ret
+
+# a0 new_value
+.globl mtimecmp_set
+mtimecmp_set:
+        li t0, MTIMECMP_BASE
+        sd a0, (t0)
         ret

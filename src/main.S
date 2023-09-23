@@ -1,5 +1,3 @@
-.include "regs.S"
-
 .section .text
 
 .globl main
@@ -12,8 +10,7 @@ main:
 
         la a0, msg_mtime
         jal print_str_ln
-        li a0, MTIME_BASE
-        ld a0, 0(a0)
+        jal mtime_get
         jal print_unsigned_ln
         la a0, msg_sep
         jal print_str_ln
@@ -26,8 +23,7 @@ main:
 
         la a0, msg_mtime
         jal print_str_ln
-        li a0, MTIME_BASE
-        ld a0, (a0)
+        jal mtime_get
         jal print_unsigned_ln
         la a0, msg_sep
         jal print_str_ln

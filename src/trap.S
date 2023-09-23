@@ -33,6 +33,9 @@ trap_unimp_handler:
 
 .globl trap_setup
 trap_setup:
+        addi sp, sp, -8
+        sd ra, (sp)
+
         la t0, trap_handler
         csrw mtvec, t0
 
@@ -42,16 +45,17 @@ trap_setup:
         li t0, MSTATUS_MIE
         csrrs zero, mstatus, t0
 
-        li t0, MTIME_BASE
-        ld t0, (t0)
+        jal mtime_get
 
-        li t1, MTIMECMP_BASE
         li t2, 48000000
-        add t0, t0, t2
-        sd t0, (t1)
+        add a0, a0, t2
+        jal mtimecmp_set
 
         li t0, MIE_MTIE
         csrrs zero, mie, t0
+
+        ld ra, (sp)
+        addi sp, sp, 8
 
         ret
 
