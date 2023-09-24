@@ -9,3 +9,5 @@
 
 .equ MTVEC_DIRECT,      0
 .equ MTVEC_VECTORED,    1
+
+.equ MTIMER_FREQ,       48000000    # idk
