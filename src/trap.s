@@ -30,9 +30,46 @@ trap_entry:
         j trap_unimp_handler
 
 exception_handler:
+        SAVE_REGS
+
+        la a0, msg_mcause
+        jal print_str_ln
+
+        csrr a0, mcause
+        slli a0, a0, 1
+        srli a0, a0, 1
+        jal print_unsigned_ln
+
+        la a0, msg_sep
+        jal print_str_ln
+
+        csrr a0, mepc
+        addi a0, a0, 2
+        csrw mepc, a0
+
+        RESTORE_REGS
+
         mret
 
 trap_unimp_handler:
+        SAVE_REGS
+
+        la a0, msg_unimp
+        jal print_str_ln
+
+        csrr a0, mcause
+        slli a0, a0, 1
+        srli a0, a0, 1
+        jal print_unsigned_ln
+
+        la a0, msg_sep
+        jal print_str_ln
+
+        li a0, 1
+        j tohost_exit
+
+        RESTORE_REGS
+
         mret
 
 .globl trap_setup
@@ -95,10 +132,13 @@ irq_mtimer_handler:
 
 1:
         RESTORE_REGS
+
         mret
 
 .section .data
 
 msg_1s_passed:    .asciz "1s has passed"
 msg_exit:         .asciz "calling exit from irq_mtimer_handler"
+msg_mcause:       .asciz "mcause:"
+msg_unimp:        .asciz "trap_unimp_handler, mcause:"
 irq_mtimer_cnt:   .byte 0

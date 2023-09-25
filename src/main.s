@@ -28,9 +28,12 @@ main:
         la a0, msg_sep
         jal print_str_ln
 
-        la a0, msg_wfi
+        la a0, msg_exc
         jal print_str_ln
-        la a0, msg_sep
+
+        unimp
+
+        la a0, msg_wfi
         jal print_str_ln
 
         ld ra, 0(sp)
@@ -45,6 +48,7 @@ main:
 msg_mtime:    .asciz "mtime:"
 msg_c_fn:     .asciz "calling a C function from asm:"
 msg_wfi:      .asciz "waiting for interrupts..."
+msg_exc:      .asciz "manually invoking an exception..."
 
 .globl msg_sep
 msg_sep:      .asciz "-------------------------"
